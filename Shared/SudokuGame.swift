@@ -52,6 +52,15 @@ struct SudokuGame {
             }
         }
         
+        secenekIndisleri.enumerated().map {i, item in
+            if item == position {
+                secenekIndisleri.remove(at: i)
+            }
+        }
+        
+        
+      
+        
         gameOver = cardsSecenek.count == 0
 
     }

@@ -20,6 +20,9 @@ struct ContentView: View {
     @State private var dragOffset: [CGSize] = Array(repeating: .zero, count: 9)
     
     @State private var gameAreaHeight: CGFloat = 0
+    @State private var gameAreaWidth: CGFloat = 0
+    
+   
     
     private func resetPosition(_ id: Int){
         withAnimation() {
@@ -45,18 +48,20 @@ struct ContentView: View {
         let x = location.x
         let y = location.y
         
+      
+        
         print("y: \(y) height: \(gameAreaHeight) screenWidth:\(screenWidth)")
         
         
         
-        if x < screenWidth * 0.33 && y < gameAreaHeight * 0.33{
+        if x < gameAreaWidth * 0.33 && y < gameAreaHeight * 0.33{
             print("Birinci konum")
             if viewModel.eslesmeKontrol(position: 0, id: id){
                 eslesmeOldu(0,id)
             }else{resetPosition(id)}
             
         }
-        else if x > screenWidth * 0.33 && x < screenWidth * 0.66 && y < gameAreaHeight * 0.33{
+        else if x > gameAreaWidth * 0.33 && x < gameAreaWidth * 0.66 && y < gameAreaHeight * 0.33{
             print("İkinci konum")
             if viewModel.eslesmeKontrol(position: 1, id: id){
                 eslesmeOldu(1,id)
@@ -65,7 +70,7 @@ struct ContentView: View {
         
         
         
-        else if x > screenWidth * 0.66 && y < gameAreaHeight * 0.33{
+        else if x > gameAreaWidth * 0.66 && y < gameAreaHeight * 0.33{
             print("Üçüncü konum")
             if viewModel.eslesmeKontrol(position: 2, id: id){
                 eslesmeOldu(2,id)
@@ -74,7 +79,7 @@ struct ContentView: View {
         
         
         
-        else if x < screenWidth * 0.33 && y < gameAreaHeight * 0.66 && y > gameAreaHeight * 0.33 {
+        else if x < gameAreaWidth * 0.33 && y < gameAreaHeight * 0.66 && y > gameAreaHeight * 0.33 {
             print("Dördüncü konum")
             if viewModel.eslesmeKontrol(position: 3, id: id){
                 eslesmeOldu(3,id)
@@ -83,7 +88,7 @@ struct ContentView: View {
         
         
         
-        else if x > screenWidth * 0.33 && x < screenWidth * 0.66 && y < gameAreaHeight * 0.66 && y > gameAreaHeight * 0.33 {
+        else if x > gameAreaWidth * 0.33 && x < screenWidth * 0.66 && y < gameAreaHeight * 0.66 && y > gameAreaHeight * 0.33 {
             print("Beşinci konum")
             if viewModel.eslesmeKontrol(position: 4, id: id){
                 eslesmeOldu(4,id)
@@ -92,7 +97,7 @@ struct ContentView: View {
         
         
         
-        if x > screenWidth * 0.66 && y < gameAreaHeight * 0.66 && y > gameAreaHeight * 0.33 {
+        if x > gameAreaWidth * 0.66 && y < gameAreaHeight * 0.66 && y > gameAreaHeight * 0.33 {
             print("Altıncı konum")
             if viewModel.eslesmeKontrol(position: 5, id: id){
                 eslesmeOldu(5,id)
@@ -101,7 +106,7 @@ struct ContentView: View {
         
         
         
-        else if x < screenWidth * 0.33 && y < gameAreaHeight && y > gameAreaHeight * 0.66 {
+        else if x < gameAreaWidth * 0.33 && y < gameAreaHeight && y > gameAreaHeight * 0.66 {
             print("Yedinci konum")
             if viewModel.eslesmeKontrol(position: 6, id: id){
                 eslesmeOldu(6,id)
@@ -110,7 +115,7 @@ struct ContentView: View {
         
         
         
-        else if x > screenWidth * 0.33 && x < screenWidth * 0.66 && y < gameAreaHeight && y > gameAreaHeight * 0.66 {
+        else if x > gameAreaWidth * 0.33 && x < gameAreaWidth * 0.66 && y < gameAreaHeight && y > gameAreaHeight * 0.66 {
             print("Sekizinci konum")
             if viewModel.eslesmeKontrol(position: 7, id: id){
                 eslesmeOldu(7,id)
@@ -119,7 +124,7 @@ struct ContentView: View {
         
         
         
-        else if x > screenWidth * 0.66 && y < gameAreaHeight && y > gameAreaHeight * 0.66 {
+        else if x > gameAreaWidth * 0.66 && y < gameAreaHeight && y > gameAreaHeight * 0.66 {
             print("Dukuzuncu konum")
             if viewModel.eslesmeKontrol(position: 8, id: id){
                 eslesmeOldu(8,id)
@@ -136,7 +141,10 @@ struct ContentView: View {
         
         let fontScaleFactor: CGFloat = 0.75
         
-         if isExtraSmall{
+         if isMacOS {
+            return 100
+        }
+         else if isExtraSmall{
             return screenWidth/4 * fontScaleFactor
         }
         
@@ -144,9 +152,7 @@ struct ContentView: View {
             return screenWidth/3.5 * fontScaleFactor
         }
         
-        else if isMacOS {
-            return 100
-        }
+       
         
         else if isLargestIpad {
             return screenWidth/4.5 * fontScaleFactor
@@ -173,13 +179,14 @@ struct ContentView: View {
                         ForEach(viewModel.cards) {card in
                             Text(card.content)
                                 .font(Font.system(size: fontSize()))
-                                .frame(width: screenWidth * 0.3 ,height: gameAreaHeight * 0.30)
+                                .frame(width: gameAreaWidth * 0.3 ,height: gameAreaHeight * 0.30)
                                 .background( Rectangle().stroke().foregroundColor(card.content != "" ? .green : .clear))
                         }
                     }
                 
                     .onAppear(){
                         gameAreaHeight = geometry.size.height * 0.50
+                        gameAreaWidth = geometry.size.width
                 }.frame(height: gameAreaHeight, alignment: .center)
             
             

@@ -16,8 +16,10 @@ extension View {
     var isMacOS: Bool {
 #if os(macOS)
         return true
-#endif
+        #else
         return false
+#endif
+        
     }
     
     
